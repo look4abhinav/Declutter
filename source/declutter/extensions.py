@@ -1,6 +1,6 @@
 # This file contains all the files the user wants to manage.
 
-extensions = {
+formats = {
     "Image": ["jpg", "jpeg", "png", "gif", "raw"],
     "Audio": ["mp3", "wav", "aac"],
     "Video": ["mp4", "mkv", "avi", "flv", "wmv", "mov", "m4a"],

@@ -2,14 +2,14 @@ from pathlib import Path
 import random
 
 from declutter.functions import create, organize, remove
-from declutter.formats import extensions
+from declutter.extensions import formats
 
 
 def setup_files():
     cwd = Path.cwd()
     test_dir = cwd / "SampleFiles"
     for i in range(5):
-        file = test_dir / random.choice(extensions)
+        file = test_dir / random.choice(formats)
         print(file)
 
 
