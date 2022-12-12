@@ -8,8 +8,8 @@ from declutter.extensions import formats
 def setup_files():
     cwd = Path.cwd()
     test_dir = cwd / "SampleFiles"
-    for i in range(5):
-        file = test_dir / random.choice(formats)
+    for file_type in formats:
+        file = test_dir / formats[file_type][random.randint(0, 2)]
         print(file)
 
 
