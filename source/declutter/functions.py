@@ -3,7 +3,7 @@ import os
 import re
 import shutil
 
-from formats import extensions
+from declutter.extensions import formats
 
 
 # Creating a Logger for logs
@@ -18,7 +18,7 @@ def create(dest="."):
     try:
         os.mkdir(dest)
         logger.info("Creating DeClutter directory")
-        for extn in extensions.keys():
+        for extn in formats.keys():
             logger.info("Creating {} directory".format(extn))
             os.mkdir(os.path.join(dest, extn))
         return True
@@ -66,8 +66,8 @@ def organize(src=".", dest="."):
         for path in paths:
             if path != __file__:
                 fileType = getFileType(path)
-                for types in extensions.keys():
-                    if fileType in extensions[types]:
+                for types in formats.keys():
+                    if fileType in formats[types]:
                         logger.info(
                             "Moving {} to {} directory".format(
                                 os.path.basename(path), types
