@@ -5,7 +5,6 @@ import shutil
 
 from declutter.extensions import formats
 
-
 # Creating a Logger for logs
 log_folder = os.path.join(os.getcwd(), "logs_declutter.log")
 log_format = "%(levelname)s: %(asctime)s - %(message)s"
