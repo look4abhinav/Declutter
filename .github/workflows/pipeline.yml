@@ -40,5 +40,6 @@ jobs:
         
     - name: Run Declutter
       run: |
+        pip install -e .
         cd source
         python main.py
