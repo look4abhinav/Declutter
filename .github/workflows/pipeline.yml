@@ -42,4 +42,5 @@ jobs:
     - name: Run Declutter
       run: |
         cd source
+        pwd
         python main.py
