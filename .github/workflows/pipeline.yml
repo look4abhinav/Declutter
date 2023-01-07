@@ -49,5 +49,5 @@ jobs:
       run: |
         cd source
         safety check
-        bandit
+        bandit .
         python -m cProfile
