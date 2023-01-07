@@ -50,4 +50,3 @@ jobs:
         cd source
         safety check
         bandit .
-        python -m cProfile
