@@ -71,8 +71,8 @@ jobs:
         coverage html
         
     - name: 'Upload Artifact'
-    uses: actions/upload-artifact@v3
-    with:
-      name: Coverage Reports
-      path: htmlcov/index.html
-      retention-days: 5
+      uses: actions/upload-artifact@v3
+      with:
+        name: Coverage Reports
+        path: htmlcov/index.html
+        retention-days: 5
