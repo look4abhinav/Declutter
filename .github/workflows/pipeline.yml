@@ -75,4 +75,4 @@ jobs:
       with:
         name: Coverage Reports
         path: htmlcov/index.html
-        retention-days: 5
+        retention-days: 1
