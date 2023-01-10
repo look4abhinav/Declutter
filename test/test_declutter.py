@@ -18,7 +18,7 @@ class Testcases(unittest.TestCase):
         assert True
 
     def test_remove(self):
-        assert True
+        assert False
 
     def test_organize(self):
         assert True
