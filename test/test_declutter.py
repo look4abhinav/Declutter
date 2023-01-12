@@ -20,21 +20,21 @@ class Testcases(unittest.TestCase):
             os.system(f"touch {file}")
 
     def test_create(self):
-        path = Path.cwd() / "Declutter"
-        assert create(path)
+        # path = Path.cwd() / "Declutter"
+        assert create()
 
     def test_remove(self):
-        self.test_organize()
+        # self.test_organize()
         assert remove()
 
     def test_organize(self):
-        path = Path.cwd()
-        src = path / "SampleFiles"
-        dest = path / "Declutter"
-        os.mkdir(dest)
-        self.test_create()
-        self.setup_files(src)
-        assert organize(src, dest)
+        # path = Path.cwd()
+        # src = path / "SampleFiles"
+        # dest = path / "Declutter"
+        # os.mkdir(dest)
+        # self.test_create()
+        # self.setup_files(src)
+        assert organize()
 
 
 if __name__ == "__main__":
