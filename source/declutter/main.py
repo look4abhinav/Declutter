@@ -1,6 +1,6 @@
 import os
 
-from functions import create, organize, remove
+from declutter.functions import create, organize, remove
 
 src_path = os.getcwd()
 dest_path = os.path.join(src_path, "Declutter")

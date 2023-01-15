@@ -8,36 +8,21 @@ from declutter.functions import create, organize, remove
 
 
 class Testcases(unittest.TestCase):
-    def setup_files(self, target):
-        for file_type in formats:
-            filename = (
-                "file"
-                + str(random.randint(0, 2))
-                + "."
-                + formats[file_type][random.randint(0, 2)]
-            )
-            file = target / filename
-            os.system(f"touch {file}")
-
     def test_create(self):
-        # path = Path.cwd() / "Declutter"
-        assert create()
-
-    def test_remove(self):
-        # self.test_organize()
-        assert remove()
+        src = Path.cwd() / "test" / "DummyFiles"
+        dest = src / "Declutter"
+        assert create(dest)
 
     def test_organize(self):
-        # path = Path.cwd()
-        # src = path / "SampleFiles"
-        # dest = path / "Declutter"
-        # os.mkdir(dest)
-        # self.test_create()
-        # self.setup_files(src)
-        assert organize()
+        src = Path.cwd() / "test" / "DummyFiles"
+        dest = src / "Declutter"
+        assert organize(src, dest)
+
+    def test_remove(self):
+        src = Path.cwd() / "test" / "DummyFiles"
+        dest = src / "Declutter"
+        assert remove(src, dest)
 
 
 if __name__ == "__main__":
-    # unittest.main()
-    t = Testcases()
-    t.test_create()
+    unittest.main()
