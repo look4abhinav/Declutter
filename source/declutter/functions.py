@@ -61,7 +61,7 @@ def rename(file, path="."):
 def organize(src=".", dest="."):
     try:
         logger.info("Getting file paths")
-        paths = (os.path.join(src, _) for _ in os.listdir(src) if not os.path.isdir(_))
+        paths = (os.path.join(src / _) for _ in os.listdir(src) if not os.path.isdir(_))
         for path in paths:
             if path != __file__:
                 fileType = getFileType(path)

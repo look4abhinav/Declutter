@@ -1,27 +1,27 @@
-from pathlib import Path
+import os
 import random
 import unittest
+from pathlib import Path
 
-from declutter.functions import create, organize, remove
 from declutter.extensions import formats
+from declutter.functions import create, organize, remove
 
 
 class Testcases(unittest.TestCase):
-    def setup_files(self):
-        cwd = Path.cwd()
-        test_dir = cwd / "SampleFiles"
-        for file_type in formats:
-            file = test_dir / formats[file_type][random.randint(0, 2)]
-            print(file)
-
     def test_create(self):
-        assert True
-
-    def test_remove(self):
-        assert True
+        src = Path.cwd() / "test" / "DummyFiles"
+        dest = src / "Declutter"
+        assert create(dest)
 
     def test_organize(self):
-        assert True
+        src = Path.cwd() / "test" / "DummyFiles"
+        dest = src / "Declutter"
+        assert organize(src, dest)
+
+    def test_remove(self):
+        src = Path.cwd() / "test" / "DummyFiles"
+        dest = src / "Declutter"
+        assert remove(src, dest)
 
 
 if __name__ == "__main__":
