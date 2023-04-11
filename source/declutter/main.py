@@ -1,17 +1,16 @@
-import os
+from pathlib import Path
 
 from declutter.functions import create, organize, remove
 
-src_path = os.getcwd()
-dest_path = os.path.join(src_path, "Declutter")
+src_path = Path.cwd()
+dest_path = src_path / "Declutter"
 
 if __name__ == "__main__":
-
     print("Welcome to DeClutter")
     print("Source:      ", src_path)
     print("Destination: ", dest_path)
 
-    if not os.path.exists(dest_path):
+    if not Path.exists(dest_path):
         print("Running...")
         try:
             create(dest_path)

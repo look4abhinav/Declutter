@@ -2,11 +2,12 @@ import logging
 import os
 import re
 import shutil
+from pathlib import Path
 
 from declutter.extensions import formats
 
 # Creating a Logger for logs
-log_folder = os.path.join(os.getcwd(), "logs_declutter.log")
+log_folder = Path.cwd() / "logs_declutter.log"
 log_format = "%(levelname)s: %(asctime)s - %(message)s"
 logging.basicConfig(filename=log_folder, level=logging.DEBUG, format=log_format)
 logger = logging.getLogger()
@@ -15,11 +16,12 @@ logger = logging.getLogger()
 # Create Declutter Directory and its Sub-directories
 def create(dest="."):
     try:
-        os.mkdir(dest)
+        if not Path.exists(dest):
+            Path.mkdir(dest)
         logger.info("Creating DeClutter directory")
         for extn in formats.keys():
             logger.info("Creating {} directory".format(extn))
-            os.mkdir(os.path.join(dest, extn))
+            Path.mkdir(dest / extn)
         return True
     except Exception as e:
         return False
@@ -27,18 +29,17 @@ def create(dest="."):
 
 # Get File Extentions
 def getFileType(path):
-    # path = os.path.splitext(path)[-1]
     return path.split(".")[-1]
 
 
 # Rename files to avoid duplicate files
 def rename(file, path="."):
-    while os.path.exists(os.path.join(path, os.path.basename(file))):
+    while Path.exists(path / file.name):
         i = 0
-        temp = os.path.basename(file)
+        temp = file.name
         newfilename = temp
         while True and i < 10:
-            filename = os.path.splitext(temp)
+            filename = temp.suffix
             number = re.findall("([0-9]+)$", filename[0])
             newfilename = filename[0]
             if not number:
@@ -47,13 +48,13 @@ def rename(file, path="."):
                 i = int(number[0]) + 1
                 newfilename = re.sub("([0-9]+)$", "", filename[0])
             newfilename = newfilename + str(i) + filename[1]
-            if os.path.exists(os.path.join(os.path.dirname(file), newfilename)):
+            if Path.exists(Path.parent(file) / newfilename):
                 i += 1
                 temp = newfilename
             else:
-                os.rename(file, os.path.join(os.path.dirname(file), newfilename))
+                Path.rename(file, Path.parent(file) / newfilename)
                 break
-        file = os.path.join(os.path.dirname(file), newfilename)
+        file = Path.parent(file) / newfilename
     yield file
 
 
@@ -61,31 +62,19 @@ def rename(file, path="."):
 def organize(src=".", dest="."):
     try:
         logger.info("Getting file paths")
-        paths = (os.path.join(src / _) for _ in os.listdir(src) if not os.path.isdir(_))
+        paths = (Path(src / _) for _ in Path.iterdir(src) if not Path.is_dir(_))
         for path in paths:
             if path != __file__:
-                fileType = getFileType(path)
-                for types in formats.keys():
+                fileType = path.suffix[1:]
+                for types in formats:
                     if fileType in formats[types]:
-                        logger.info(
-                            "Moving {} to {} directory".format(
-                                os.path.basename(path), types
-                            )
-                        )
-                        if os.path.exists(
-                            os.path.join(
-                                os.path.join(dest, types), os.path.basename(path)
-                            )
-                        ):
-                            path = rename(
-                                os.path.abspath(path), os.path.join(dest, types)
-                            )
+                        logger.info(f"Moving {path.name} to {types} directory")
+                        if Path.exists(dest / types / path.name):
+                            path = rename(Path.absolute(path), dest / types)
                             logger.warning(
-                                "File already exists in {}. Renaming file to {}".format(
-                                    os.path.join(dest, types), os.path.basename(path)
-                                )
+                                f"File already exists in {dest / types}. Renaming file to {path.name}"
                             )
-                        shutil.move(path, os.path.join(dest, types))
+                        shutil.move(path, dest / types)
         return True
     except Exception as e:
         logger.error("Exception caught {}".format(e))
@@ -96,13 +85,14 @@ def organize(src=".", dest="."):
 def remove(src=".", dest="."):
     try:
         logger.info("Moving all files to {}".format(src))
-        paths = [folders[0] for folders in os.walk(dest)]
+        paths = [folders for folders in Path.iterdir(dest)]
         for path in paths[::-1]:
-            for file in os.listdir(path):
-                logger.info("Moving {}".format(os.path.basename(file)))
-                shutil.move(os.path.join(path, file), src)
-            os.rmdir(path)
+            for file in Path.iterdir(path):
+                logger.info("Moving {}".format(file.name))
+                shutil.move(path / file, src)
+            Path.rmdir(path)
         logger.info("Removing DeClutter")
+        Path.rmdir(dest)
         return True
     except Exception as e:
         logger.error("Exception caught {}".format(e))
