@@ -26,11 +26,6 @@ def create(dest="."):
         return False
 
 
-# Get File Extentions
-def getFileType(path):
-    return path.split(".")[-1]
-
-
 # Rename files to avoid duplicate files
 def rename(file, path="."):
     while Path.exists(path / file.name):
@@ -38,23 +33,22 @@ def rename(file, path="."):
         temp = file.name
         newfilename = temp
         while True and i < 10:
-            filename = temp.suffix
-            number = re.findall("([0-9]+)$", filename[0])
-            newfilename = filename[0]
+            filename = file.stem
+            number = re.findall("([0-9]+)$", filename)
+            newfilename = filename
             if not number:
                 i += 1
             else:
                 i = int(number[0]) + 1
-                newfilename = re.sub("([0-9]+)$", "", filename[0])
-            newfilename = newfilename + str(i) + filename[1]
-            if Path.exists(Path.parent(file) / newfilename):
+                newfilename = re.sub("([0-9]+)$", "", filename)
+            newfilename = newfilename + str(i) + file.suffix
+            if Path.exists(file.parent / newfilename):
                 i += 1
                 temp = newfilename
             else:
-                Path.rename(file, Path.parent(file) / newfilename)
+                newname = Path.rename(file, file.parent / newfilename)
                 break
-        file = Path.parent(file) / newfilename
-    yield file
+    return newname
 
 
 # Move files into appropriate folders
