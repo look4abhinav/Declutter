@@ -19,10 +19,10 @@ def create(dest="."):
             Path.mkdir(dest)
         logger.info("Creating DeClutter directory")
         for extn in formats.keys():
-            logger.info("Creating {} directory".format(extn))
+            logger.info(f"Creating {extn} directory")
             Path.mkdir(dest / extn)
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 
@@ -32,7 +32,7 @@ def rename(file, path="."):
         i = 0
         temp = file.name
         newfilename = temp
-        while True and i < 10:
+        while i < 10:
             filename = file.stem
             number = re.findall("([0-9]+)$", filename)
             newfilename = filename
@@ -70,23 +70,23 @@ def organize(src=".", dest="."):
                         shutil.move(path, dest / types)
         return True
     except Exception as e:
-        logger.error("Exception caught {}".format(e))
+        logger.error(f"Exception caught {str(e)}")
         return False
 
 
 # Move all files in the main folder and delete Declutter
 def remove(src=".", dest="."):
     try:
-        logger.info("Moving all files to {}".format(src))
-        paths = [folders for folders in Path.iterdir(dest)]
+        logger.info(f"Moving all files to {src}")
+        paths = list(Path.iterdir(dest))
         for path in paths[::-1]:
             for file in Path.iterdir(path):
-                logger.info("Moving {}".format(file.name))
+                logger.info(f"Moving {file.name}")
                 shutil.move(path / file, src)
             Path.rmdir(path)
         logger.info("Removing DeClutter")
         Path.rmdir(dest)
         return True
     except Exception as e:
-        logger.error("Exception caught {}".format(e))
+        logger.error(f"Exception caught {str(e)}")
         return False
